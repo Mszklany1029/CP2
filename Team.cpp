@@ -162,8 +162,8 @@ bool Team::numAvailable(unsigned int preferred){
 
 unsigned int Team::lowestAvailableNumber(){
       //unsigned int lowest = 1; 
-      
-      for(unsigned int i = 0; i < elements; i++){
+
+     for(unsigned int i = 0; i < elements; i++){
                   unsigned int low = playerArray[i].getJerseyNum();
             for(unsigned int x = 1; x < elements; x++){
                   unsigned int check = playerArray[x].getJerseyNum();  
@@ -174,19 +174,36 @@ unsigned int Team::lowestAvailableNumber(){
                }
             }
       }
+      if(playerArray[0].getJerseyNum() != 1){
+         return 1;
+      }else if((playerArray[elements - 1].getJerseyNum()) - (playerArray[0].getJerseyNum()) == elements-1){
+
+         return (playerArray[elements-1].getJerseyNum()) + 1; 
+      }else{
+         for(unsigned int i = 1; i < elements; i++){
+            int diff = playerArray[i].getJerseyNum() - playerArray[i-1].getJerseyNum();
+            if(diff > 1){
+               return (playerArray[i-1].getJerseyNum()) + 1; 
+            }
+         }
+         
+      }
+
+   /*  
    if(playerArray[0].getJerseyNum() != 1){
       return 1; 
    }else{
+
          unsigned int diff = 0; 
          for(unsigned int i = 1; i < elements; i++){
              diff = playerArray[i].getJerseyNum() - playerArray[i-1].getJerseyNum(); 
              if(diff > 1){
-                return playerArray[i-1].getJerseyNum() + 1; 
+                return playerArray[i-1].getJerseyNum() + 1;       
              }
 
 
          }
-   }
+   }*/
       return 0; 
 
 }

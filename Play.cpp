@@ -141,9 +141,9 @@ int main() {
                
             Team *temp = league.getTeam(command.getArg2()); 
             
-            if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred())){
-                  freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
-            }
+            //if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred())){
+              //    freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
+            //}
 
             temp->addPlayer(*freeAgents.releasePlayer(command.getArg1()));
             unsigned int hold = temp->getPlayer(command.getArg1())->getJerseyNum();
