@@ -31,6 +31,36 @@ Team::Team(const std::string &loc, const std::string &name) {
    //num_players = 0; 
 }
 
+Team::Team(const Team& rhs){
+   location = rhs.location; 
+   nickname = rhs.nickname; 
+   size = rhs.size; 
+   elements = rhs.elements; 
+   delete[] playerArray;
+   playerArray = new Player[size]; 
+      for(unsigned int i = 0; i < elements; i++){
+         playerArray[i] = rhs.playerArray[i]; 
+
+      }
+}
+
+Team& Team::operator=(const Team& rhs){
+      if(this != &rhs){
+        // delete[] playerArray; 
+         location = rhs.location; 
+         nickname = rhs.nickname;
+         size = rhs.size; 
+         elements = rhs.elements; 
+         delete[] playerArray; 
+         playerArray = new Player[size]; 
+         for(unsigned int i = 0; i < elements; i++){
+            playerArray[i] = rhs.playerArray[i];
+         }
+      }
+      return *this; 
+
+}
+
 bool Team::addPlayer(const Player &p) {
    //if (num_players == MAX_PLAYERS)
      // return false;
@@ -91,8 +121,8 @@ std::ostream &operator<<(std::ostream &out, const Team &tm) {
    return out;
 }
 
-Player* Team::releasePlayer(const std::string &lastName /*, const std::string &nickName*/){
-      Player temp = playerArray[0]; 
+Player& Team::releasePlayer(const std::string &lastName /*, const std::string &nickName*/){
+      static Player temp = playerArray[0]; 
      // cout << elements << endl; 
    for(unsigned int i = 0; i < elements; i++){
       //cout << "enter loop" << endl;
@@ -100,8 +130,10 @@ Player* Team::releasePlayer(const std::string &lastName /*, const std::string &n
       if(playerArray[i].getLastName() == lastName){
         // cout << "enter if" << endl; 
           
-          static Player *temp = (&playerArray[i]); 
- 
+          
+         //static Player *temp = (&playerArray[i]);
+         static Player temp = playerArray[i];
+
 
          playerArray[i] = playerArray[elements - 1]; 
 
@@ -111,7 +143,7 @@ Player* Team::releasePlayer(const std::string &lastName /*, const std::string &n
          }*/
          elements = elements - 1; 
          //cout << elements << endl; 
-         return temp; 
+        return temp; 
          
 
          
@@ -121,8 +153,8 @@ Player* Team::releasePlayer(const std::string &lastName /*, const std::string &n
 
 
    }
-   return nullptr; 
-   
+   return temp; 
+   //return nullptr; 
 
 };
 

@@ -1,6 +1,33 @@
 #include "League.h"
 using namespace std;
 
+League::League(const League& rhs){
+   size = rhs.size; 
+   elements = rhs.elements; 
+   team = new Team[size]; 
+   for(unsigned int i = 0; i < elements; i++){
+      team[i] = rhs.team[i]; 
+   }
+
+}
+
+League& League::operator=(const League& rhs){
+   if(this != &rhs){
+      delete[] team; 
+      size = rhs.size; 
+      elements = rhs.elements; 
+      team = new Team[size]; 
+      for(unsigned int i = 0; i < elements; i++){
+         team[i] = rhs.team[i];   
+      }
+
+   }
+   return *this;
+
+}
+
+
+
 bool League::addTeam(const Team &new_team) {
    if (new_team.getNickname().empty())
       return false;

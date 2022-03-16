@@ -26,11 +26,40 @@ Player::Player(const std::string &first, const std::string &last,
    jerseyNumber = jersey;
   // is_active = active;
    team_nickname = nickname;
-   preferred = jersey; 
+   preferred = jersey;  
    size = 1; 
    elements = 0; 
    career = new string[size];
 }
+
+Player::Player(const Player& rhs){
+   firstName = rhs.firstName; 
+   lastName = rhs.lastName; 
+   jerseyNumber = rhs.jerseyNumber; 
+   team_nickname = rhs.team_nickname; 
+   preferred = rhs.preferred; 
+   size = rhs.size; 
+   elements = rhs.elements; 
+   career = new std::string[size]; 
+   for(unsigned int i=0; i < elements; i++)
+         career[i] = rhs.career[i]; 
+} 
+
+Player& Player:: operator=(const Player& rhs){
+   if(this != &rhs){
+         delete[] career; 
+         size = rhs.size; 
+         elements = rhs.elements; 
+         career = new std::string[size];
+
+         for(unsigned int i = 0; i < elements; i++){
+               career[i] = rhs.career[i];
+         } 
+   }
+   return *this;
+
+}
+
 
 bool Player::read() {
    std::string line;
@@ -64,36 +93,22 @@ void Player::show() const {
 }
 
 bool Player::record(const std::string &teamName, unsigned int num){
-  std::string t = std::to_string(num); 
+   std::string t = std::to_string(num); 
    std::string recording = teamName + "(#" + t + ")";
    //cout<< "CHEck" << endl; 
 
-if(size == elements){
-   std::string* tempArray = new std::string[size + 1]; 
-
-   for(unsigned int i = 0; i < elements; i++){
+   if(size == elements){
+      std::string* tempArray = new std::string[size + 1]; 
+      size++; 
+      for(unsigned int i = 0; i < elements; i++){
          tempArray[i] = career[i];
+      }
+      delete[] career; 
+      career = tempArray; 
    }
-   delete[] career; 
-   size++; 
+   career[elements] = recording;
    elements++; 
-   career = tempArray; 
-
-   career[size - 1] = recording;
-   }else if (elements == 0){
-          career[elements] = recording;
-          elements++; 
-      }else{
-      career[size - elements] = recording;  
-      elements++; 
-
-   } 
-   //cout << career[0] << endl; 
-   //player[num_players++] = p;
-   //num_players++;
-   //player[0] = p;  
    return true;
-   
 }
 
 void Player::showCareer(){

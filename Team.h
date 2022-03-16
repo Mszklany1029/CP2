@@ -25,6 +25,9 @@ class Team {
          //size = 0; 
          //playerArray = new Player[size]; 
       Team(const std::string &loc, const std::string &name);
+      Team(const Team& rhs); 
+      Team& operator=(const Team& rhs); 
+
       std::string getNickname() const {return nickname;};
       bool addPlayer(const Player &p);
       void showTeam() const;
@@ -33,7 +36,7 @@ class Team {
       bool onTeam(const std::string &lastName); 
       Player* getPlayer(const std::string &lastName); 
       friend std::ostream &operator<<(std::ostream &out, const Team &tm);
-      Player* releasePlayer(const std::string &lastName/*, const std::string &nickname*/); 
+      Player& releasePlayer(const std::string &lastName/*, const std::string &nickname*/); 
       unsigned int lowestAvailableNumber(); 
       bool numAvailable(unsigned int preferred); 
       //unsigned int teamSize() {return elements;};

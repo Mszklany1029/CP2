@@ -19,6 +19,10 @@ class Player {
       Player();
       Player(const std::string &first, const std::string &last,
              unsigned int jersey, /*bool active, */ const std::string &nickname);
+
+      Player(const Player& rhs);
+      Player& operator=(const Player& rhs);
+      
       std::string getTeam() {return team_nickname;};
       bool read();
       void show() const;
