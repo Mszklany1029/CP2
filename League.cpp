@@ -121,13 +121,14 @@ Player* League::searchTeams(const std::string &lastName){
 
 }*/ 
 
-Team* League::getTeam(const std::string &nickname){
+Team& League::getTeam(const std::string &nickname){
    for(unsigned int i = 0; i < elements; i++){
          if(nickname == team[i].getNickname()){
-            return (&team[i]); 
+            return team[i]; 
          }
 
    }
-   return nullptr; 
+   static Team temp = Team("NULL", "NUll"); 
+   return temp; 
 
 }

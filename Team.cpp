@@ -121,8 +121,8 @@ std::ostream &operator<<(std::ostream &out, const Team &tm) {
    return out;
 }
 
-Player& Team::releasePlayer(const std::string &lastName /*, const std::string &nickName*/){
-      static Player temp = playerArray[0]; 
+Player* Team::releasePlayer(const std::string &lastName /*, const std::string &nickName*/){
+      static Player temp = Player("NULL", "NULL", 0, ""); 
      // cout << elements << endl; 
    for(unsigned int i = 0; i < elements; i++){
       //cout << "enter loop" << endl;
@@ -131,8 +131,8 @@ Player& Team::releasePlayer(const std::string &lastName /*, const std::string &n
         // cout << "enter if" << endl; 
           
           
-         //static Player *temp = (&playerArray[i]);
-         static Player temp = playerArray[i];
+         //static Player &temp = playerArray[i];
+         static Player *temp = (&playerArray[i]);
 
 
          playerArray[i] = playerArray[elements - 1]; 
@@ -153,8 +153,8 @@ Player& Team::releasePlayer(const std::string &lastName /*, const std::string &n
 
 
    }
-   return temp; 
-   //return nullptr; 
+   //return temp; 
+  return nullptr; 
 
 };
 

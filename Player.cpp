@@ -45,9 +45,15 @@ Player::Player(const Player& rhs){
          career[i] = rhs.career[i]; 
 } 
 
+
 Player& Player:: operator=(const Player& rhs){
    if(this != &rhs){
          delete[] career; 
+         firstName = rhs.firstName; 
+         lastName = rhs.lastName; 
+         jerseyNumber = rhs.jerseyNumber; 
+         team_nickname = rhs.team_nickname; 
+         preferred = rhs.preferred; 
          size = rhs.size; 
          elements = rhs.elements; 
          career = new std::string[size];

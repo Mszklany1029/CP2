@@ -36,7 +36,7 @@ class Team {
       bool onTeam(const std::string &lastName); 
       Player* getPlayer(const std::string &lastName); 
       friend std::ostream &operator<<(std::ostream &out, const Team &tm);
-      Player& releasePlayer(const std::string &lastName/*, const std::string &nickname*/); 
+      Player* releasePlayer(const std::string &lastName/*, const std::string &nickname*/); 
       unsigned int lowestAvailableNumber(); 
       bool numAvailable(unsigned int preferred); 
       //unsigned int teamSize() {return elements;};
