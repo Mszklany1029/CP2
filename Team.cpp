@@ -143,14 +143,33 @@ Player* Team::getPlayer(const std::string &lastName){
 bool Team::numAvailable(unsigned int preferred){
    
    for(unsigned int i = 0; i < elements; i++){
-         if(preferred == playerArray[i].getPreferred()){
-            return false; 
-         }
+      if(preferred == playerArray[i].getJerseyNum()){
+         return false; 
+      }
    }
    return true; 
 }
 
 unsigned int Team::lowestAvailableNumber(){
+  unsigned int search = 1; 
+   
+   while(search <= elements){
+      for(unsigned int i = 0; i <= elements; i++){
+         if(i == elements){
+            return search; 
+         }else if(playerArray[i].getJerseyNum() == search){
+            break; 
+         }  
+      }
+      search++; 
+   }
+   return elements+1; 
+}
+
+
+
+
+//unsigned int Team::lowestAvailableNumber(){
       //unsigned int lowest = 1; 
 
      /*for(unsigned int i = 0; i < elements; i++){
@@ -165,7 +184,7 @@ unsigned int Team::lowestAvailableNumber(){
             }
       }*/
 
-      for(unsigned int i = 1; i < elements; i++){
+  /*    for(unsigned int i = 1; i < elements; i++){
          unsigned int key = playerArray[i].getJerseyNum(); 
          unsigned int x = i - 1; 
          while(key < playerArray[x].getJerseyNum() && x >= 0){
@@ -173,7 +192,7 @@ unsigned int Team::lowestAvailableNumber(){
                --x; 
          }
          playerArray[x + 1].setJerseyNum(key); 
-      }
+      }*/
       
       //we need, starting position on right, and starting position on left
      // unsigned int left = playerArray[0].getJerseyNum(); 
@@ -206,7 +225,7 @@ unsigned int Team::lowestAvailableNumber(){
 
    //   }
 
-      if(playerArray[0].getJerseyNum() != 1){
+ /*     if(playerArray[0].getJerseyNum() != 1){
          return 1;
       }else if((playerArray[elements - 1].getJerseyNum()) - (playerArray[0].getJerseyNum()) == elements-1){
 
@@ -219,7 +238,7 @@ unsigned int Team::lowestAvailableNumber(){
             }
          }
          
-      }
+      }*/
 
    /*  
    if(playerArray[0].getJerseyNum() != 1){
@@ -236,6 +255,6 @@ unsigned int Team::lowestAvailableNumber(){
 
          }
    }*/
-      return 0; 
+     // return 0; 
 
-}
+//}

@@ -82,14 +82,41 @@ int main() {
             if(command.getArg4() == ""){
                freeAgents.addPlayer(player);
 
-            }else if(!league.addPlayer(player, player.getTeam())){
-		         cout << "Could not add the player to team" << player.getTeam() << std::endl;;
-              
-             }else{
-                 do_AddPlayer(command.getArg1(), command.getArg2(), int_param, command.getArg4() );
+            }else{ //if(!league.addPlayer(player, player.getTeam())){
+               Team* adding = &league.getTeam(command.getArg4());
+
+               if(!adding->numAvailable(int_param)){
+                  player.setJerseyNum(adding->lowestAvailableNumber()); 
+               } 
+               
+               if(!league.addPlayer(player, player.getTeam())){
+                  cout << "Could not add the player to team" << player.getTeam() << std::endl;;
+               }else{
+                  Player *temp = league.getTeam(command.getArg4()).getPlayer(command.getArg2());
+                  temp->record(command.getArg4(), temp->getJerseyNum()); 
+               }
+
+
+             }
+      }else{
+         cout << "Error: arg 3: " << command.getArg3() << " is not an integer" << endl; 
+      }
+             
+             /*else{
+               do_AddPlayer(command.getArg1(), command.getArg2(), int_param, command.getArg4() );
+               Player *temp = league.getTeam(command.getArg4()).getPlayer(command.getArg2()); 
+               Team* adding = &league.getTeam(command.getArg4());
+               
+               if(!adding->numAvailable(temp->getPreferred())){
+                  //league.getTeam(command.getArg4()).getPlayer(command.getArg2())->setJerseyNum();
+                  adding->getPlayer(command.getArg2())->setJerseyNum(adding->lowestAvailableNumber());
+               }
+
+             //  if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred()))
+               //   freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
                  
-                 Player *temp = league.getTeam(command.getArg4()).getPlayer(command.getArg2()); 
-                  temp->record(command.getArg4(), temp->getJerseyNum());
+               
+               temp->record(command.getArg4(), temp->getJerseyNum());
 
 
 
@@ -99,7 +126,7 @@ int main() {
              }
 		 }else{
 			cout << "Error: arg 3: " << command.getArg3() << " is not an integer" << endl; 
-       }
+       }*/
         
       }
       else if (command.getOperation()  == "League")
