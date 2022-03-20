@@ -1,7 +1,7 @@
 #include "League.h"
 using namespace std;
 
-League::League(const League& rhs){
+/*League::League(const League& rhs){
    size = rhs.size; 
    elements = rhs.elements; 
    team = new Team[size]; 
@@ -24,8 +24,12 @@ League& League::operator=(const League& rhs){
    }
    return *this;
 
-}
+}*/ 
 
+
+League::~League(){
+   delete[] team; 
+}
 
 
 bool League::addTeam(const Team &new_team) {
@@ -35,27 +39,18 @@ bool League::addTeam(const Team &new_team) {
       return false;
   
    if(size == elements){
-   Team* temp = new Team[size + 1];
-    for(unsigned int i = 0; i < elements; i++){
-	temp[i] = team[i]; 
-    } 
-    delete[] team; 
-    size++;
-    elements++; 
-    team = temp; 
-     
-    team[size-1] = new_team;
-    }else if(elements == 0){
-         team[elements] = new_team; 
-         elements++; 
-    }else{
-      team[size - elements] = new_team; 
-      elements++; 
-    } 
-    //MEMORY LEAK HERE???? 
-
-//   team.push_back(new_team);
-   return true;
+      Team* temp = new Team[size + 1];
+      size++; 
+      for(unsigned int i = 0; i < elements; i++){
+	      temp[i] = team[i]; 
+      } 
+      delete[] team; 
+      team = temp; 
+   }
+   team[elements] = new_team; 
+   elements++; 
+   return true; 
+   //MEMORY LEAK HERE???? 
 } 
 
 bool League::teamExists(const std::string &nickname) const {

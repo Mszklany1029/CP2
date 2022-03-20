@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <iostream>
 #include <sstream>
+#include <limits> 
 
 using namespace std;
 
@@ -66,6 +67,10 @@ Player& Player:: operator=(const Player& rhs){
 
 }
 
+Player::~Player(){
+   delete[] career; 
+}
+
 
 bool Player::read() {
    std::string line;
@@ -123,5 +128,12 @@ void Player::showCareer(){
       cout << career[i] << endl; 
    }
    
+}
+
+bool Player::isEmpty(){
+   if(preferred  == std::numeric_limits<unsigned int>::max()){
+      return true; 
+   }
+   return false;
 
 }

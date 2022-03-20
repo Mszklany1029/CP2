@@ -12,8 +12,8 @@ Team::Team() {
    location = "";
    nickname = "";
    size = 1;
-   //elements = 0;  
-   // playerArray = new Player[size]; 
+   elements = 0;  
+   playerArray = new Player[size]; 
    // MEMORY LEAK HERE ^^^^^
    //num_players = 0;
 }
@@ -36,17 +36,14 @@ Team::Team(const Team& rhs){
    nickname = rhs.nickname; 
    size = rhs.size; 
    elements = rhs.elements; 
-   delete[] playerArray;
    playerArray = new Player[size]; 
-      for(unsigned int i = 0; i < elements; i++){
-         playerArray[i] = rhs.playerArray[i]; 
-
-      }
+   for(unsigned int i = 0; i < elements; i++){
+      playerArray[i] = rhs.playerArray[i]; 
+   }
 }
 
 Team& Team::operator=(const Team& rhs){
       if(this != &rhs){
-        // delete[] playerArray; 
          location = rhs.location; 
          nickname = rhs.nickname;
          size = rhs.size; 
@@ -58,41 +55,25 @@ Team& Team::operator=(const Team& rhs){
          }
       }
       return *this; 
+}
 
+Team::~Team(){
+   delete[] playerArray;
 }
 
 bool Team::addPlayer(const Player &p) {
-   //if (num_players == MAX_PLAYERS)
-     // return false;
    if(size == elements){
-   Player* tempArray = new Player[size + 1]; 
-
-   for(unsigned int i = 0; i < elements; i++){
+      Player* tempArray = new Player[size + 1]; 
+      size++; 
+      for(unsigned int i = 0; i < elements; i++){
          tempArray[i] = playerArray[i];
+      }
+      delete[] playerArray; 
+      playerArray = tempArray; 
    }
-   delete[] playerArray; 
-   size++; 
+   playerArray[elements] = p; 
    elements++; 
-   playerArray = tempArray; 
-
-   playerArray[size - 1] = p;
-   }else if (elements == 0){
-          playerArray[0] = p;
-          elements++; 
-      }else{
-      playerArray[size - elements] = p; 
-      elements++; 
-
-   } 
-  /* if(getNickname() != "Free Agents"){
-       playerArray[elements-1].record(getNickname(), playerArray[elements-1].getJerseyNum()); 
-
-   }*/
- //cout << elements << endl; 
-   //player[num_players++] = p;
-   //num_players++;
-   //player[0] = p;  
-   return true;
+   return true; 
 }
 
 void Team::showTeam() const {
@@ -121,42 +102,18 @@ std::ostream &operator<<(std::ostream &out, const Team &tm) {
    return out;
 }
 
-Player* Team::releasePlayer(const std::string &lastName /*, const std::string &nickName*/){
-      static Player temp = Player("NULL", "NULL", 0, ""); 
-     // cout << elements << endl; 
+Player Team::releasePlayer(const std::string &lastName){
+     Player p; 
    for(unsigned int i = 0; i < elements; i++){
-      //cout << "enter loop" << endl;
-         
       if(playerArray[i].getLastName() == lastName){
-        // cout << "enter if" << endl; 
-          
-          
-         //static Player &temp = playerArray[i];
-         static Player *temp = (&playerArray[i]);
-
-
-         playerArray[i] = playerArray[elements - 1]; 
-
-         /*for(unsigned int x = i; x < elements -1 ; x++){
-            playerArray[x] = playerArray[x+1];
-            //FIX THIS
-         }*/
-         elements = elements - 1; 
-         //cout << elements << endl; 
-        return temp; 
-         
-
-         
-      }else{
-         cout << "Error: Player: " << lastName << " not on team" << endl;   
+         p = playerArray[i]; 
+         playerArray[i] = playerArray[--elements]; 
+         return p; 
       }
-
-
-   }
-   //return temp; 
-  return nullptr; 
-
-};
+   }  
+   cout << "Error: Player: " << lastName << " not on team" << endl;   
+   return p;
+}
 
 bool Team::onTeam(const std::string &lastName){
 
@@ -182,6 +139,7 @@ Player* Team::getPlayer(const std::string &lastName){
 
 }
 
+
 bool Team::numAvailable(unsigned int preferred){
    
    for(unsigned int i = 0; i < elements; i++){
@@ -195,7 +153,7 @@ bool Team::numAvailable(unsigned int preferred){
 unsigned int Team::lowestAvailableNumber(){
       //unsigned int lowest = 1; 
 
-     for(unsigned int i = 0; i < elements; i++){
+     /*for(unsigned int i = 0; i < elements; i++){
                   unsigned int low = playerArray[i].getJerseyNum();
             for(unsigned int x = 1; x < elements; x++){
                   unsigned int check = playerArray[x].getJerseyNum();  
@@ -205,7 +163,49 @@ unsigned int Team::lowestAvailableNumber(){
                      playerArray[x] = temp; 
                }
             }
+      }*/
+
+      for(unsigned int i = 1; i < elements; i++){
+         unsigned int key = playerArray[i].getJerseyNum(); 
+         unsigned int x = i - 1; 
+         while(key < playerArray[x].getJerseyNum() && x >= 0){
+            playerArray[x + 1] = playerArray[x];
+               --x; 
+         }
+         playerArray[x + 1].setJerseyNum(key); 
       }
+      
+      //we need, starting position on right, and starting position on left
+     // unsigned int left = playerArray[0].getJerseyNum(); 
+      //unsigned int right = playerArray[elements - 1].getJerseyNum();
+      //unsigned int mid = left + (right - left)/2; 
+
+    /*  while(right >= left){
+         //unsigned int mid = left + (right - left)/2; 
+            unsigned int mid  = (left + right)/2; 
+
+            if(playerArray[mid].getJerseyNum() != mid + 1 && playerArray[mid -1].getJerseyNum() == mid){
+               return mid +1; 
+            }else if(playerArray[mid].getJerseyNum() == mid + 1){
+               left = mid + 1; 
+            }else{
+               right = mid - 1; 
+            }*/
+
+
+
+         /*if(playerArray[mid].getJerseyNum() != mid){
+            if(/*mid == 1 ||*/ //playerArray[mid - 1].getJerseyNum() == mid -1)
+              /* return mid; 
+            right = mid - 1;
+            //mid = mid -1; 
+         }else{
+            left = mid +1;
+           // mid = mid + 1; 
+         }*/ 
+
+   //   }
+
       if(playerArray[0].getJerseyNum() != 1){
          return 1;
       }else if((playerArray[elements - 1].getJerseyNum()) - (playerArray[0].getJerseyNum()) == elements-1){

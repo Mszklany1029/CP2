@@ -54,6 +54,7 @@ int main() {
 
       std::getline(std::cin, line);
       Parser command(line); 
+     // player.show(); 
 
       if (command.getOperation()  == "Team"){
 		Team team = Team(command.getArg1(), command.getArg2());
@@ -118,17 +119,19 @@ int main() {
             }
       }
       else if (command.getOperation() == "Quit") {
-         break;
+         break;   
       }else if(command.getOperation() == "Release"){
          
             if(league.teamExists(command.getArg2())){
             /*(league.getTeam(command.getArg2()) != league.getTeam("NULL"))*/
                   Team* temp = &league.getTeam(command.getArg2());
-                  //NULLPTR ERROR HERE??
-                  freeAgents.addPlayer(*temp->releasePlayer(command.getArg1()));
-                  
-                  do_ReleasePlayer(command.getArg1(), command.getArg2());
-
+                  //NULLPTR ERROR HERE? 
+                 if(temp->getPlayer(command.getArg1())->isEmpty()){
+                     cout << "Error: Player " << command.getArg1() << " not found." << endl; 
+                  }else{
+                     freeAgents.addPlayer(temp->releasePlayer(command.getArg1()));
+                     do_ReleasePlayer(command.getArg1(), command.getArg2());
+                  }
 
             }else{
                 cout << "Error: team " << command.getArg2() << " does not exist." << endl;
@@ -144,11 +147,10 @@ int main() {
                
             Team* temp = &league.getTeam(command.getArg2()); 
             
-            //if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred())){
-              //    freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
-            //}
-
-            temp->addPlayer(*freeAgents.releasePlayer(command.getArg1()));
+            if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred()))
+                  freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
+            
+            temp->addPlayer(freeAgents.releasePlayer(command.getArg1()));
             unsigned int hold = temp->getPlayer(command.getArg1())->getJerseyNum();
             temp->getPlayer(command.getArg1())->record(command.getArg2(), hold); 
             //FIX HERE^^^

@@ -22,6 +22,7 @@ class Player {
 
       Player(const Player& rhs);
       Player& operator=(const Player& rhs);
+      ~Player(); 
       
       std::string getTeam() {return team_nickname;};
       bool read();
@@ -32,6 +33,7 @@ class Player {
       void setJerseyNum(unsigned int num){jerseyNumber = num;};
       bool record(const std::string &teamName, unsigned int num); 
       void showCareer(); 
+      bool isEmpty(); 
       
    
 };

@@ -21,8 +21,9 @@ class League {
        //elements = 1;
        //^^^^ MEMORY LEAK HERE^^^^
        };
-       League(const League& rhs); 
-       League& operator=(const League& rhs); 
+       ~League();
+      // League(const League& rhs); 
+       //League& operator=(const League& rhs); 
 
        bool addTeam(const Team &new_team);
        bool teamExists(const std::string &nickname) const;
