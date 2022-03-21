@@ -31,58 +31,50 @@ void do_SignPlayer(string lastName, string teamName){
 }
 
 int main() {
-  // string command;  
+ 
    Team team;
    Player player;
    League league;
    string line;
    int int_param;
    Team freeAgents("", "Free Agents"); 
-   //int try_this; 
-//hi
-  //freeAgents = Team("", "Free Agents");
- // league.addTeam(freeAgents); 
+  
    while (1) {
-      //freeAgents = Team("", "Free Agents");
-      //league.addTeam(freeAgents); 
-
-
+     
       std::string teamName;
       cout << endl << "Enter a command: " << endl;
-      cout << "Choose from [\"Team\" \"Player\" \"League\" \"Roster\" \"Quit\"]" << endl; 
+      cout << "Choose from "<< endl; 
+      cout << "Team <location> <team-nickname>" << endl; 
+      cout << "Player <firstname> <lastname> <number> [<team-nickname>]" << endl; 
+      cout << "League" << endl; 
+      cout << "Roster [<team-nickname>]" << endl;
+      cout << "Release <lastname> <team-nickname>" << endl; 
+      cout << "Sign <lastname> <team-nickname>" << endl; 
+      cout << "Career <lastname>" << endl; 
+      cout << "Quit" << endl; 
       cout << ": "; 
 
       std::getline(std::cin, line);
       Parser command(line); 
-     // player.show(); 
+     
 
       if (command.getOperation()  == "Team"){
-		Team team = Team(command.getArg1(), command.getArg2());
-		
-            if (!league.teamExists(team.getNickname())){
-               league.addTeam(team);
+		   Team team = Team(command.getArg1(), command.getArg2());
+         if (!league.teamExists(team.getNickname())){
+            league.addTeam(team);
 	    	do_AddTeam(command.getArg1(), command.getArg2()); 
-	    }
-	    	
-            else 
-	       cout << "Duplicate team nickname " << team.getNickname() <<       
-		       " not added" << std::endl;;
-        // }
-	// else
-          //  cout << "Team didn't read properly" << std::endl;
+	   }else 
+	      cout << "Duplicate team nickname " << team.getNickname() << " not added" << std::endl;;
       }
-      else if (command.getOperation() == "Player") {
-     
-          
-		if (Parser::isInteger(command.getArg3())){
-			 int_param = stoi(command.getArg3());
+      else if (command.getOperation() == "Player") {        
+		   if (Parser::isInteger(command.getArg3())){
+			   int_param = stoi(command.getArg3());
             player = Player(command.getArg1(), command.getArg2(), int_param, command.getArg4());
-           cout << player.getLastName() << ", " << player.getJerseyNum() << endl;
+            cout << player.getLastName() << ", " << player.getJerseyNum() << endl;
 
             if(command.getArg4() == ""){
                freeAgents.addPlayer(player);
-
-            }else{ //if(!league.addPlayer(player, player.getTeam())){
+            }else{ 
                Team* adding = &league.getTeam(command.getArg4());
 
                if(!adding->numAvailable(int_param)){
@@ -95,131 +87,79 @@ int main() {
                   Player *temp = league.getTeam(command.getArg4()).getPlayer(command.getArg2());
                   temp->record(command.getArg4(), temp->getJerseyNum()); 
                }
-
-
              }
-      }else{
-         cout << "Error: arg 3: " << command.getArg3() << " is not an integer" << endl; 
-      }
-             
-             /*else{
-               do_AddPlayer(command.getArg1(), command.getArg2(), int_param, command.getArg4() );
-               Player *temp = league.getTeam(command.getArg4()).getPlayer(command.getArg2()); 
-               Team* adding = &league.getTeam(command.getArg4());
-               
-               if(!adding->numAvailable(temp->getPreferred())){
-                  //league.getTeam(command.getArg4()).getPlayer(command.getArg2())->setJerseyNum();
-                  adding->getPlayer(command.getArg2())->setJerseyNum(adding->lowestAvailableNumber());
-               }
-
-             //  if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred()))
-               //   freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
-                 
-               
-               temp->record(command.getArg4(), temp->getJerseyNum());
-
-
-
-                 //player.record(command.getArg4(), int_param); 
-                 //FIX HERE
-
-             }
-		 }else{
-			cout << "Error: arg 3: " << command.getArg3() << " is not an integer" << endl; 
-       }*/
-        
+         }else{
+            cout << "Error: arg 3: " << command.getArg3() << " is not an integer" << endl; 
+         }    
       }
       else if (command.getOperation()  == "League")
-            league.showTeams();
+         league.showTeams();
       else if (command.getOperation() == "Roster") {
-            teamName = command.getArg1(); 
-            if(teamName == "" ){
-               //league.showPlayers("Free Agents");
-               freeAgents.showPlayers();
-               do_GetRoster("Free Agents");
-            }else{
-
-        //    cout << "Team: ";
-	   // std::getline(std::cin, teamName);
+         teamName = command.getArg1(); 
+         if(teamName == "" ){
+            freeAgents.showPlayers();
+            do_GetRoster("Free Agents");
+         }else{
             league.showPlayers(teamName);
             do_GetRoster(command.getArg1()); 
-            }
+         }
       }
       else if (command.getOperation() == "Quit") {
          break;   
       }else if(command.getOperation() == "Release"){
-         
-            if(league.teamExists(command.getArg2())){
-            /*(league.getTeam(command.getArg2()) != league.getTeam("NULL"))*/
-                  Team* temp = &league.getTeam(command.getArg2());
-                  //NULLPTR ERROR HERE? 
-                 if(temp->getPlayer(command.getArg1())->isEmpty()){
-                     cout << "Error: Player " << command.getArg1() << " not found." << endl; 
-                  }else{
-                     freeAgents.addPlayer(temp->releasePlayer(command.getArg1()));
-                     do_ReleasePlayer(command.getArg1(), command.getArg2());
-                  }
+         if(league.teamExists(command.getArg2())){
+            Team* temp = &league.getTeam(command.getArg2());
+                
+            if(temp->getPlayer(command.getArg1()) == nullptr){
+               cout << "Error: Player " << command.getArg1() << " not found." << endl; 
+            }else{
+               freeAgents.addPlayer(temp->releasePlayer(command.getArg1()));
+               Player* released = freeAgents.getPlayer(command.getArg1());
+               released->setRecent(released->getJerseyNum());
+               do_ReleasePlayer(command.getArg1(), command.getArg2());
+            }
 
             }else{
                 cout << "Error: team " << command.getArg2() << " does not exist." << endl;
             }
-
       }else if(command.getOperation() == "Sign"){
             
          if(league.teamExists(command.getArg2())){
-         /*(league.getTeam(command.getArg2()) != nullptr)*/
             if(!freeAgents.onTeam(command.getArg1())){
                cout<< "Error: Player " << command.getArg1() << " is not a free agent" << endl;
             }else{
-               
-            Team* temp = &league.getTeam(command.getArg2()); 
-            
-            if(!temp->numAvailable(freeAgents.getPlayer(command.getArg1())->getPreferred()))
-                  freeAgents.getPlayer(command.getArg1())->setJerseyNum(temp->lowestAvailableNumber());
+               Team* temp = &league.getTeam(command.getArg2()); 
+               Player* temp_player = freeAgents.getPlayer(command.getArg1()); 
+               if(!temp->numAvailable(temp_player->getPreferred())){
+                  if(temp->numAvailable(temp_player->getRecent())){
+                     temp_player->setJerseyNum(temp_player->getRecent()); 
+                  }else{
+                     temp_player->setJerseyNum(temp->lowestAvailableNumber());
+                  }
+            }
             
             temp->addPlayer(freeAgents.releasePlayer(command.getArg1()));
             unsigned int hold = temp->getPlayer(command.getArg1())->getJerseyNum();
             temp->getPlayer(command.getArg1())->record(command.getArg2(), hold); 
-            //FIX HERE^^^
-
             }
-
          }else{
             cout << "Error: team " << command.getArg2() << " does not exist" << endl; 
          }
-
-         
-       
-   }else if(command.getOperation() == "Career"){ 
-         //cout<< "HOLD" << endl; 
-            
-            if(freeAgents.onTeam(command.getArg1())){
-               Player &temp = *freeAgents.getPlayer(command.getArg1()); 
-               //freeAgents.getPlayer(command.getArg1())->showCareer(); 
-                  temp.showCareer(); 
-
-            }else{
-               //league.searchTeams(command.getArg1())->showCareer(); 
-                  Player *temp = league.searchTeams(command.getArg1()); 
-                  temp->showCareer(); 
-            }
-
-         
-         
-         /*if(freeAgents.onTeam(command.getArg1())){
-            freeAgents.getPlayer(command.getArg1()).showCareer(); 
-            
+      }else if(command.getOperation() == "Career"){ 
                
-            
-         }else{
-            
-           // league.searchTeams(command.getArg1()).showCareer(); 
-         }*/
-         
-
-
+         if(freeAgents.onTeam(command.getArg1())){
+            Player &temp = *freeAgents.getPlayer(command.getArg1());    
+            temp.showCareer(); 
+         }else{      
+            Player *temp = league.searchTeams(command.getArg1()); 
+            if(temp != nullptr){
+               temp->showCareer(); 
+            }else{
+               cout << "Error: Player " << command.getArg1() << " could not be found." << endl;
+            }
+         }
    }else{
-         cout << "Command " << command.getOperation() << " not recognized. Please try again." << endl; 
-      }
+      cout << "Command " << command.getOperation() << " not recognized. Please try again." << endl; 
+   }
 }
 }

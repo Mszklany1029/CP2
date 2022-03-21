@@ -6,8 +6,8 @@
 #include <sstream>
 
 static const char *WHITESPACE = " \t\n\r";
-static const char *UNEXPECTED_ARGS = "unexpected arguments";
-static const char *MISSING_ARGS = "missing arguments";
+//static const char *UNEXPECTED_ARGS = "unexpected arguments";
+//static const char *MISSING_ARGS = "missing arguments";
 
 class Parser {
    public:

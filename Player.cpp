@@ -9,27 +9,23 @@ Player::Player() {
    firstName = "";
    lastName = "";
    jerseyNumber = -1;
-  // is_active = false;
    team_nickname = "";
    preferred = -1; 
    size = 1; 
    elements = 0;
-   career = new string[size]; 
-   
-
-   
+   career = new string[size];    
 }
 
 Player::Player(const std::string &first, const std::string &last,
-		unsigned int jersey, /*bool active,*/ const std::string &nickname) {
+		unsigned int jersey, const std::string &nickname) {
    firstName = first;
    lastName = last;
    jerseyNumber = jersey;
-  // is_active = active;
    team_nickname = nickname;
    preferred = jersey;  
    size = 1; 
    elements = 0; 
+   recent = 0; 
    career = new string[size];
 }
 
@@ -41,30 +37,29 @@ Player::Player(const Player& rhs){
    preferred = rhs.preferred; 
    size = rhs.size; 
    elements = rhs.elements; 
+   recent = rhs.recent; 
    career = new std::string[size]; 
    for(unsigned int i=0; i < elements; i++)
          career[i] = rhs.career[i]; 
 } 
 
-
 Player& Player:: operator=(const Player& rhs){
    if(this != &rhs){
-         delete[] career; 
-         firstName = rhs.firstName; 
-         lastName = rhs.lastName; 
-         jerseyNumber = rhs.jerseyNumber; 
-         team_nickname = rhs.team_nickname; 
-         preferred = rhs.preferred; 
-         size = rhs.size; 
-         elements = rhs.elements; 
-         career = new std::string[size];
-
-         for(unsigned int i = 0; i < elements; i++){
-               career[i] = rhs.career[i];
-         } 
+      delete[] career; 
+      firstName = rhs.firstName; 
+      lastName = rhs.lastName; 
+      jerseyNumber = rhs.jerseyNumber; 
+      team_nickname = rhs.team_nickname; 
+      preferred = rhs.preferred; 
+      size = rhs.size; 
+      elements = rhs.elements;
+      recent = rhs.recent; 
+      career = new std::string[size];
+      for(unsigned int i = 0; i < elements; i++){
+         career[i] = rhs.career[i];
+      } 
    }
    return *this;
-
 }
 
 Player::~Player(){
@@ -85,13 +80,6 @@ bool Player::read() {
    is.str(line);
    is >> jerseyNumber; 
 
-   /*std::cout << "     Active (y/n): "; 
-   std::getline(cin, line);
-   is_active = false;
-   if (!line.empty() && line[0] == 'y')
-       is_active = true;
-       */
-         
    std::cout << "             Team: "; 
    std::getline(cin, team_nickname);
 
@@ -100,22 +88,21 @@ bool Player::read() {
 
 void Player::show() const {
    std::cout << lastName << ", " << firstName << " (#" << jerseyNumber << ") "
-	     /*<< " [" << (!is_active ? "not " : "") << "active]" */ << std::endl;
+	    << std::endl;
 }
 
 bool Player::record(const std::string &teamName, unsigned int num){
    std::string t = std::to_string(num); 
    std::string recording = teamName + "(#" + t + ")";
-   //cout<< "CHEck" << endl; 
-
    if(size == elements){
-      std::string* tempArray = new std::string[size + 1]; 
-      size++; 
+      int newSize = size*2; 
+      std::string* tempArray = new std::string[newSize]; 
       for(unsigned int i = 0; i < elements; i++){
          tempArray[i] = career[i];
       }
       delete[] career; 
       career = tempArray; 
+      size = newSize; 
    }
    career[elements] = recording;
    elements++; 
@@ -123,11 +110,9 @@ bool Player::record(const std::string &teamName, unsigned int num){
 }
 
 void Player::showCareer(){
-   cout << "dO SOMETHING" << endl;
    for(unsigned int i = 0; i < elements; i++){
       cout << career[i] << endl; 
    }
-   
 }
 
 bool Player::isEmpty(){
@@ -135,5 +120,4 @@ bool Player::isEmpty(){
       return true; 
    }
    return false;
-
 }

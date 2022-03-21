@@ -1,36 +1,9 @@
 #include "League.h"
 using namespace std;
 
-/*League::League(const League& rhs){
-   size = rhs.size; 
-   elements = rhs.elements; 
-   team = new Team[size]; 
-   for(unsigned int i = 0; i < elements; i++){
-      team[i] = rhs.team[i]; 
-   }
-
-}
-
-League& League::operator=(const League& rhs){
-   if(this != &rhs){
-      delete[] team; 
-      size = rhs.size; 
-      elements = rhs.elements; 
-      team = new Team[size]; 
-      for(unsigned int i = 0; i < elements; i++){
-         team[i] = rhs.team[i];   
-      }
-
-   }
-   return *this;
-
-}*/ 
-
-
 League::~League(){
    delete[] team; 
 }
-
 
 bool League::addTeam(const Team &new_team) {
    if (new_team.getNickname().empty())
@@ -39,18 +12,19 @@ bool League::addTeam(const Team &new_team) {
       return false;
   
    if(size == elements){
-      Team* temp = new Team[size + 1];
-      size++; 
+      int newSize = size*2; 
+      Team* temp = new Team[newSize];
       for(unsigned int i = 0; i < elements; i++){
 	      temp[i] = team[i]; 
       } 
       delete[] team; 
       team = temp; 
+      size = newSize; 
    }
    team[elements] = new_team; 
    elements++; 
    return true; 
-   //MEMORY LEAK HERE???? 
+  
 } 
 
 bool League::teamExists(const std::string &nickname) const {
@@ -60,16 +34,11 @@ bool League::teamExists(const std::string &nickname) const {
    return false;
 }
 
-bool League::addPlayer(const Player &new_player, const std::string &nickname) {
-  
+bool League::addPlayer(const Player &new_player, const std::string &nickname) { 
    for (unsigned i = 0; i < elements; i++){
-      
       if (team[i].getNickname() == nickname) {
-         
-         team[i].showTeam(); 
-         //Player player = Player("joe", "Mama", 233, "Giants"); 
+         team[i].showTeam();  
          team[i].addPlayer(new_player);
-         //cout << "seg fault????" << endl; 
          return true;
       }
    }
@@ -95,35 +64,19 @@ bool League::showPlayers(const std::string &nickname) const {
 
 Player* League::searchTeams(const std::string &lastName){
    for(unsigned int i = 0; i < elements; i++){
-      if(team[i].onTeam(lastName)){
-            //static Player temp = team[i].getPlayer(lastName;
-            return team[i].getPlayer(lastName);
+      if(team[i].onTeam(lastName)){ 
+         return team[i].getPlayer(lastName);
       }
    }
    return nullptr; 
-
 }
-
-/*Player League::searchTeams(const std::string &lastName){
-   for(unsigned int i = 0; i < elements ; i++){
-      if(team[i].onTeam(lastName)){
-         return team[i].getPlayer(lastName); 
-
-      }
-
-   }  
-   return team[0].getPlayer(lastName); 
-
-}*/ 
 
 Team& League::getTeam(const std::string &nickname){
    for(unsigned int i = 0; i < elements; i++){
-         if(nickname == team[i].getNickname()){
-            return team[i]; 
-         }
-
+      if(nickname == team[i].getNickname()){
+         return team[i]; 
+      }
    }
    static Team temp = Team("NULL", "NUll"); 
    return temp; 
-
 }

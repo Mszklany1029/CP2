@@ -13,12 +13,13 @@ class Player {
       std::string* career; 
       unsigned int elements; 
       unsigned int size; 
-     // bool is_active;
+      unsigned int recent; 
+     
 
    public:
       Player();
       Player(const std::string &first, const std::string &last,
-             unsigned int jersey, /*bool active, */ const std::string &nickname);
+             unsigned int jersey, const std::string &nickname);
 
       Player(const Player& rhs);
       Player& operator=(const Player& rhs);
@@ -34,6 +35,8 @@ class Player {
       bool record(const std::string &teamName, unsigned int num); 
       void showCareer(); 
       bool isEmpty(); 
+      void setRecent(unsigned int recNum){recent = recNum;}; 
+      unsigned int getRecent(){return recent;}; 
       
    
 };
